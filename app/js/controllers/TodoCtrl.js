@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myTodo').controller('TodoCtrl', function TodoCtrl($scope, $location, todoStorage, $filter) {
+angular.module('myTodo').controller('TodoCtrl', function TodoCtrl($scope, $routeParams, $location, todoStorage, $filter) {
     var todos = $scope.todos = todoStorage.get();
 
     $scope.status = '';
@@ -12,19 +12,27 @@ angular.module('myTodo').controller('TodoCtrl', function TodoCtrl($scope, $locat
         $scope.allChecked = !$scope.remainingCount;
     }, true);
     
-    $scope.statusFilter = function(todo) {
-        if ($scope.status === 'active') {
-            return todo.completed === false;
-        } else if ($scope.status === 'completed') {
-            return todo.completed === true;
-        } else {
-            return todo;
-        }
-    };
+    $scope.$on('$routeChangeSuccess', function () {
+        $scope.status = $routeParams.status || '';
 
-    $scope.changeStatus = function(currentStatus) {
-        $scope.status = currentStatus;
-    };
+        $scope.statusFilter = function(todo) {
+            if ($scope.status === 'active') {
+                return todo.completed === false;
+            } else if ($scope.status === 'completed') {
+                return todo.completed === true;
+            } else {
+                return todo;
+            }
+        };
+    });
+
+/*    $scope.$on('$routeChangeSuccess', function () {
+        var status = $scope.status = $routeParams.status || '';
+
+        $scope.statusFilter = (status === 'active') ?
+        { completed: false } : (status === 'completed') ?
+        { completed: true } : {};
+    });*/
 
     $scope.addTodo = function() {
         if(!$scope.newTodo.length) {

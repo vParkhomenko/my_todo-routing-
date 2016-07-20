@@ -3,44 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>MY TODO</title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/png">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<h1>TODOS</h1>
-<section ng-controller="TodoCtrl">
-    <form ng-submit="addTodo()">
-        <input type="text" ng-model="newTodo" name="text" id="new-todo" placeholder="What needs to be done?" autofocus>
-    </form>
-    <section id="main" ng-show="todos.length" ng-cloak>
-        <input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)" ng-if="todos.length">
-        <label for="toggle-all">Выполнить все задачи</label>
-        <ul id="todo-list">
-            <li ng-repeat="todo in todos | filter:statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
-                <div class="view">
-                    <input id="toggle" class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted(todo)">
-                    <label class="toggled" ng-dblclick="editTodo(todo)">{{todo.title}}</label>
-                    <button ng-click="removeTodo(todo)">×</button>
-                </div>
-                <form ng-submit="doneEditing(todo)">
-                    <input class="edit" ng-model="todo.title" todo-blur="doneEditing(todo)" todo-focus="todo == editedTodo">
-                </form>
-            </li>
-        </ul>
-        <footer id="footer" ng-if="todos.length">
-            <span id="todo-count">{{remainingCount}}
-                <ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
-            </span>
-            <ul id="filters">
-                <li><a ng-class="{selected: status == ''}" ng-click="changeStatus('')" href="">All</a></li>
-                <li><a ng-class="{selected: status == 'active'}"  ng-click="changeStatus('active')" href="">Active</a></li>
-                <li><a ng-class="{selected: status == 'completed'}" ng-click="changeStatus('completed')" href="">Completed</a></li>
-            </ul>
-            <button id="clear-completed" ng-click="clearCompletedTodos()" ng-if="completedCount">Clear completed</button>
-        </footer>
-    </section>
-</section>
+
+<ng-view></ng-view>
 
 <script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
 <script src="js/app.module.js"></script>
 <script src="js/controllers/TodoCtrl.js"></script>
 <script src="js/services/TodoStorage.js"></script>
